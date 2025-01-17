@@ -1,0 +1,48 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.205.2/containers/alpine
+{
+	"name": "golang",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { 
+			// go version and arch
+			"GO_VER": "1.23",
+			"GO_ARCH": "bookworm",
+			// install kubectl version
+			"INSTALL_KUBECTL": "true",
+			"KUBECTL_VER": "1.30.1"
+	 	}
+	},
+	"customizations":{
+		"vscode": {
+			"extensions": [
+				"golang.Go",
+				"GitHub.copilot",
+				"humao.rest-client",
+				"isudox.vscode-jetbrains-keybindings",
+				"fcrespo82.markdown-table-formatter"
+			]
+		}
+	}
+
+	// "initializeCommand":{
+
+	// 	"cp kubeconfig": "[ ! -z \"$(docker ps -f name=kind-control-plane -q)\" ] && docker exec kind-control-plane cat /etc/kubernetes/admin.conf > config",
+
+	// 	"cp ca.crt": "[ ! -z \"$(docker ps -f name=kind-control-plane -q)\" ] && docker exec kind-control-plane cat /etc/kubernetes/pki/ca.crt > ca.crt",
+
+	// 	"cp ca.key": "[ ! -z \"$(docker ps -f name=kind-control-plane -q)\" ] && docker exec kind-control-plane cat /etc/kubernetes/pki/ca.key > ca.key"
+
+	// },
+
+
+	// "postStartCommand": {
+	// 	"mv kubeconfig": "mkdir -p /root/.kube && mv ${containerWorkspaceFolder}/config /root/.kube/config",
+	// 	"mv ca.crt": "mv ${containerWorkspaceFolder}/ca.crt /root/ca.crt",
+	// 	"mv ca.key": "mv ${containerWorkspaceFolder}/ca.key /root/ca.key"
+	// },
+
+
+	// // docker args to run the container, connect to KinD network
+	// "runArgs": [ "--network=kind" ]
+}

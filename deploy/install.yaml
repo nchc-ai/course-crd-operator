@@ -1,0 +1,109 @@
+---
+# Course CRD
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: courses.nchc.ai
+spec:
+  group: nchc.ai
+  version: v1alpha1
+  names:
+    kind: Course
+    plural: courses
+  scope: Namespaced
+---
+# operator deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: course-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      operator: course
+  template:
+    metadata:
+      labels:
+        operator: course
+    spec:
+      serviceAccountName: course-operator-sa
+      containers:
+      - name: course-operator
+        image: "nchc-ai/course-operator"
+        volumeMounts:
+        - name: course-operator-conf
+          mountPath: /etc/course-operator
+      volumes:
+      - name: course-operator-conf
+        configMap:
+          name: course-operator-cm
+          items:
+          - key: course-operator-conf
+            path: config.json
+---
+# config map
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: course-operator-cm
+data:
+  course-operator-conf: |-
+    {
+      "isOutsideCluster": false,
+      "ingressController": {
+        "host": "www.example.com",
+        "defaultBackend": "default-http-backend",
+        "namespace": "ingress-nginx",
+        "service": "ingress-nginx"
+      },
+      "database": {
+        "host": "127.0.0.1",
+        "port": 3306,
+        "username": "root",
+        "password": "password",
+        "database": "db"
+      }
+    }
+---
+# service account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: course-operator-sa
+---
+# ClusterRole
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: course-operator-clusterrole
+rules:
+- apiGroups: ["nchc.ai"]
+  resources: ["courses"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "watch", "list"]
+- apiGroups: ["extensions", "apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["extensions"]
+  resources: ["ingresses"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["events", "services", "persistentvolumeclaims"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+# ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: course-operator-clusterrolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: course-operator-clusterrole
+subjects:
+- kind: ServiceAccount
+  name: course-operator-sa
+  namespace: default

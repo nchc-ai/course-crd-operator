@@ -1,0 +1,21 @@
+FROM tensorflow/tensorflow:1.9.0
+
+# use sh -c to expansion env
+# https://stackoverflow.com/questions/40454470/how-can-i-use-a-variable-inside-a-dockerfile-cmd
+#
+# env variable name should match port name in course crd spec.
+# eg. jupyter -> ${JUPYTER}
+#
+# apiVersion: nchc.ai/v1alpha1
+# kind: Course
+#  metadata:
+#    name: course-aa
+#  spec:
+#    schedule:
+#    - "* * * * * *"
+#    image: "tensorflow:ingress"
+#    port:
+#      jupyter: 8080
+#    accessType: Ingress
+
+CMD ["sh", "-c", "/run_jupyter.sh --ip=0.0.0.0 --allow-root --NotebookApp.token='' --NotebookApp.base_url=${JUPYTER}"]

@@ -1,0 +1,17 @@
+{
+  "isOutsideCluster": true,
+  "ingressBaseUrl": "127-0-0-1.nip.io",
+  "kubeconfig": "~/.kube/config",
+  "ingressClass": "nginx",
+  "database": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "username": "user",
+    "password": "password",
+    "database": "db"
+  },
+  "redis": {
+    "host": "127.0.0.1",
+    "port": 6379
+  }
+}

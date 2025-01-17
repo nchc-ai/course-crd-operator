@@ -1,0 +1,18 @@
+apiVersion: nchc.ai/v1alpha1
+kind: Course
+metadata:
+  name: nodeport-course
+spec:
+  schedule:
+  - "* * * * * *"
+  image: "nginx:latest"
+  port:
+    web: 80
+  accessType: NodePort 
+#  gpu: 0
+#  dataset:
+#  - "dataset-test-1"
+#  - "dataset-test-2"
+#  writableVolume:
+#    owner: "user@gmail.com"
+#    mountPoint: "/tmp/work-1"

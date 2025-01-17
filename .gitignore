@@ -1,0 +1,5 @@
+vendor/*
+.idea/*
+bin/*
+course-crd-operator
+.DS_Store

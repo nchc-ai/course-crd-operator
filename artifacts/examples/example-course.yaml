@@ -1,0 +1,20 @@
+apiVersion: nchc.ai/v1alpha1
+kind: Course
+metadata:
+  name: example-course
+spec:
+  schedule:
+  - "* * 2 10 * *"
+  - "* * 3 10 * *"
+  image: "nginx:latest"
+  port:
+    web: 80
+  accessType: NodePort
+#  accessType: Igress
+#  gpu: 0
+#  dataset:
+#  - "dataset1"
+#  - "dataset2"
+#  writableVolume:
+#    owner: "user@gmail.com"
+#    mountPoint: "/tmp/work-1"

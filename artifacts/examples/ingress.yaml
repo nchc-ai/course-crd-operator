@@ -1,0 +1,21 @@
+apiVersion: nchc.ai/v1alpha1
+kind: Course
+metadata:
+  name: ingress-course
+spec:
+  schedule:
+  - "* * * * * *"
+  image: "nginx:latest"
+  port:
+    web: 80
+    aaa: 8080
+  accessType: Ingress
+#  gpu: 0
+#  dataset:
+#  - "dataset1"
+#  - "dataset2"
+#  writableVolume:
+#    owner: "user@gmail.com"
+#    uid: 2000620000
+#    storageclass: "aaa-nchc-ai-nfs"
+#    mountPoint: "/tmp/work-1"
