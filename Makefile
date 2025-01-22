@@ -5,7 +5,7 @@ USER = $(shell whoami)
 IS_DIRTY_CONDITION = $(shell git diff-index --name-status HEAD | wc -l)
 
 REPO = ghcr.io/nchc-ai
-IMAGE = course-operator
+IMAGE = $(notdir $(CURDIR))
 
 ifeq ($(strip $(IS_DIRTY_CONDITION)), 0)
 	# if clean,  IS_DIRTY tag is not required
