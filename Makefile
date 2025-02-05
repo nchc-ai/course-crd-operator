@@ -19,7 +19,7 @@ endif
 # 1. if repo in non-master branch, use branch name as image tag
 # 2. if repo in a master branch, but there is no tag, use <username>-<commit-hash>
 # 2. if repo in a master branch, and there is tag, use tag
-ifeq ($(BRANCH_NAME), master)
+ifeq ($(BRANCH_NAME), main)
 	ifeq ($(RET),0)
 		TAG = $(shell git describe --contains $(COMMIT_HASH))$(IS_DIRTY)
 	else
