@@ -16,17 +16,17 @@ else
 endif
 
 # Image Tag rule
-# 1. if repo in non-master branch, use branch name as image tag
-# 2. if repo in a master branch, but there is no tag, use <username>-<commit-hash>
-# 2. if repo in a master branch, and there is tag, use tag
-ifeq ($(BRANCH_NAME), main)
-	ifeq ($(RET),0)
-		TAG = $(shell git describe --contains $(COMMIT_HASH))$(IS_DIRTY)
-	else
-		TAG = $(USER)-$(COMMIT_HASH)$(IS_DIRTY)
-	endif
+# 1. Use git tag if we found
+# 2. if repo in a master branch, use <username>-<commit-hash>
+# 3. if repo in non-master branch, use branch name as image tag
+ifeq ($(RET),0)
+	TAG = $(shell git describe --contains $(COMMIT_HASH))$(IS_DIRTY)
 else
-	TAG = $(BRANCH_NAME)$(IS_DIRTY)
+	ifeq ($(BRANCH_NAME), main)
+		TAG = $(USER)-$(COMMIT_HASH)$(IS_DIRTY)
+	else
+		TAG = $(BRANCH_NAME)$(IS_DIRTY)
+	endif
 endif
 
 
